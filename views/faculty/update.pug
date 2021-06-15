@@ -2,8 +2,9 @@ extends ../layouts/app
 
 include ../components/forms
 block content
-    h5 Add Faculty Record
-    form(action="/faculty", method="post")
+    h5 Update Faculty Record
+    form(action="/faculty/"+_id+"?_method=PUT", method="post")
+        //+input("hidden","_method","","","_method","PUT")
         .row
             .col-md-6
                 +input("text","name","Name","Name","name",name,nameError)
@@ -16,12 +17,11 @@ block content
                     +radio-inline("Female", "gender", "male")
                     +radio-inline("Others", "gender", "other")
             .col-md-6
-                .phone
-                    +input("text","","Phone","Phone","phone[]")
-                button(type="button", class=["btn", "btn-info", "mt-2"] id="add_phone") Add Phone
-            +input("text","address","Street Address","Street Address","street_address","",streetAddressError)
-            +input("text","city","City","City","city","",cityError)
-            +input("text","country","Country","Country","country","", countryError)
+                each phone in phone_numbers
+                    +input("text","","Phone","Phone","phone[]",phone)
+            +input("text","address","Street Address","Street Address","street_address",address.street_address,streetAddressError)
+            +input("text","city","City","City","city",address.city,cityError)
+            +input("text","country","Country","Country","country",address.country, countryError)
             +input("text","course_code","Course Code","Course Code","course_code",course_code,courseCodeError)
         +submit("Submit","submit","submit","btn-success")
 block scripts

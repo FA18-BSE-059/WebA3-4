@@ -5,6 +5,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
+var methodOverride = require("method-override");
 require('dotenv').config();
 var router = require('./routes/index');
 var facultyRouter = require('./controllers/facultyController');
@@ -18,6 +19,7 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.urlencoded({ extended: true }));
+app.use(methodOverride("_method"));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css'))

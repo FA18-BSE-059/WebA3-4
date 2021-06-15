@@ -24,7 +24,6 @@ router.get('/create',function (req,res){
 
 // Store Value
 router.post('/',function (req,res){
-    return res.send(req.body.name);
     var faculty = new Faculty();
     faculty.name = req.body.name
     faculty.email = req.body.email;
@@ -37,14 +36,15 @@ router.post('/',function (req,res){
     faculty.course_code = req.body.course_code;
     faculty.city = req.body.city;
     faculty.country = req.body.country;
-    faculty.phone_numbers = [req.body.phone];
+    faculty.phone_numbers = req.body.phone;
     faculty.save((err, doc) => {
         if (!err)
-            return res.send(doc)
+            return res.redirect("/faculty")
         else {
             if (err.name === 'ValidationError') {
                 handleValidationError(err, req.body);
-                res.send(req.body);
+                console.log(req.body);
+                res.render("faculty/create",req.body)
             }
             else
                 console.log('Error during record insertion : ' + err);
@@ -52,13 +52,41 @@ router.post('/',function (req,res){
     });
 
 });
+
+// Show Update Form
+router.get('/:id/edit',function (req, res) {
+    Faculty.findById(req.params.id, (err, doc) => {
+        if (!err) {
+            res.render("faculty/update", doc);
+        }
+    });
+});
+
 // Update Record
 router.put('/:id',function (req, res) {
-
+    Faculty.findOneAndUpdate({ _id: req.body._id }, req.body, { new: true }, (err, doc) => {
+        if (!err) { res.redirect('/faculty'); }
+        else {
+            if (err.name == 'ValidationError') {
+                handleValidationError(err, req.body);
+                res.render("employee/addOrEdit", {
+                    viewTitle: 'Update Employee',
+                    employee: req.body
+                });
+            }
+            else
+                console.log('Error during record update : ' + err);
+        }
+    });
 });
 // Remove Record
-router.put('/:id',function (req, res) {
-
+router.get('/delete/:id',function (req, res) {
+    Faculty.findByIdAndRemove(req.params.id, (err, doc) => {
+        if (!err) {
+            res.redirect('/faculty');
+        }
+        else { console.log('Error in employee delete :' + err); }
+    });
 });
 function handleValidationError(err, body) {
     for (field in err.errors) {

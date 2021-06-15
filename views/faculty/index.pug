@@ -15,18 +15,33 @@ block content
                 th Phone Numbers
                 th Actions
         tbody
-        each faculty in list
-            tr
-                td=faculty.name
-                td=faculty.gender
-                td=faculty.email
-                td=faculty.address.street_address+', ' + faculty.address.city + ', ' + faculty.address.country
-                td=faculty.course_code
-                td
-                    ul.dropdown-menu
-                        each phone in faculty.phone_numbers
-                            li #{phone}
-                td.mx-auto
-                    a(href="/edit/" + faculty._id, class="btn btn-warning ") Edit
-                    a(href="/delete/" + faculty._id, class="btn btn-danger") Delete
+            if list.length >0
+                each faculty in list
+                    tr
+                        td=faculty.name
+                        td=faculty.gender
+                        td=faculty.email
+                        td=faculty.address.street_address+', ' + faculty.address.city + ', ' + faculty.address.country
+                        td=faculty.course_code
+                        td
+                            ul
+                                each phone in faculty.phone_numbers
+                                    li #{phone}
+                        td.mx-auto
+                            a(href="/faculty/" + faculty._id + "/edit", class="btn btn-warning ") Edit
+                            a(href="/faculty/delete/" + faculty._id, class="btn btn-danger delete") Delete
+            else
+                tr
+                    td(colspan=7, class=["text-center"]) No Record Found
+block scripts
+    script.
+        $(document).ready(function () {
+            $(".delete").click(function (e) {
+                event.preventDefault();
+                if(confirm("Are you sure you want to Delete the Record")){
+                    window.location.replace(e.currentTarget.href);
+                }
+            })
+        });
+
 

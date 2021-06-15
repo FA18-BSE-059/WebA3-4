@@ -8,7 +8,7 @@ facultyScehma = new mongoose.Schema({
     gender: {
         type: String,
         enum: [
-            'male', 'female', 'others'
+            'Male', 'Female', 'Others'
         ],
         required: 'Gender is Required'
     },

@@ -1,0 +1,24 @@
+extends ../layouts/app
+
+include ../components/forms
+block content
+    h5 Add Faculty Record
+    form(action="/faculty", method="post")
+        .row
+            .col-md-6
+                +input("text","name","Name","Name","name")
+            .col-md-6
+                +input("email","email","Email","Email","email")
+            .col-md-6
+                p Gender:
+                .d-flex.justify-content-between.mt-2
+                    +radio-inline("Male", "gender", "male")
+                    +radio-inline("Female", "gender", "male")
+                    +radio-inline("Others", "gender", "")
+            .col-md-6
+                +input("text","phone","Phone","Phone","phone")
+            +input("text","address","Street Address","Street Address","street_address")
+            +input("text","city","City","City","city")
+            +input("text","country","Country","Country","country")
+            +input("text","course_code","Course Code","Course Code","course_code")
+        +submit("Submit","submit","submit","btn-success")
